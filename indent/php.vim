@@ -1,16 +1,28 @@
 " Vim indent file
 " Language:	Php
-" Author:	Miles Lott <milos@groupwhere.org>, Johannes Zellner <johannes@zellner.org>, Pim Snel <pim@lingewoud.nl> 
-" URL:		http://linuxstart.nl/JiNN/index.php?page=downloads
-" Last Change:	2003 
-" Version:	0.1
+" Authors:	Miles Lott <milos@groupwhere.org>, Johannes Zellner <johannes@zellner.org>, Pim Snel <pim@lingewoud.nl> 
+" URL:		http://lingewoud.nl/downloads.php
+" Last Change:	23 feb 2004 
+" Version:	0.2
 " Notes:  	This is a combination of the PHP indent file of Miles Lott with 
 "         	the HTML indent file of Johannes Zellner. Usefull for editing 
 "         	php-files with html parts in it. 
-"         
-" Options	php_noindent_switch=1 -- do not try to indent switch/case statements (version 0.1 behavior)
+"         	
+" Changelog: 0.2 - 23 feb 2004
+" 			 - applied patch from Holger Dzeik <dzeik@nentec.de>
+"            - added changelog
+"            - added default indention of 3 spaces after the <?php for better
+"              reading
+"            - replaced URL
+"            - reformatted the options section
+"            0.1 - 2003
+"            - initial creation of html-enhanced php indent-file
 
-" Only load this indent file when no other was loaded.
+" Options: 
+let php_noindent_switch=0    " set this to '1' to not try to indent switch/case statements
+set sw=3                     " default shiftwidth of 3 spaces
+
+
 if exists("b:did_indent")
 	finish
 endif
@@ -58,14 +70,14 @@ function GetPhpIndent()
 	
 	let ind = indent(lnum) + (&sw * ind)
 
+	" Indent after php open tags 
+	if line =~ '<?php'
+		let ind = ind + &sw
+	endif
+	if cline =~ '^\s*[?>]' " // Fix from Holger Dzeik <dzeik@nentec.de> Thanks!
+		let ind = ind - &sw
+	endif
 
-" Indent after php open tags // removed this temporary
-"	if line =~ '<?php'
-"		let ind = ind + &sw
-"	endif
-"	if line =~ '\?\>' " Please fix this...
-"		let ind = ind - &sw
-"	endif
 
 	if exists("b:php_noindent_switch") " version 1 behavior, diy switch/case,etc
 		" Indent blocks enclosed by {} or ()
