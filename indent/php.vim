@@ -3,19 +3,23 @@
 " Authors:	Miles Lott <milos@groupwhere.org>, Johannes Zellner <johannes@zellner.org>, Pim Snel <pim@lingewoud.nl> 
 " URL:		http://lingewoud.nl/downloads.php
 " Last Change:	23 feb 2004 
-" Version:	0.2
+" Version:	0.3
 " Notes:  	This is a combination of the PHP indent file of Miles Lott with 
 "         	the HTML indent file of Johannes Zellner. Usefull for editing 
 "         	php-files with html parts in it. 
 "         	
-" Changelog: 0.2 - 23 feb 2004
+" Changelog: 
+" 			 0.3 - 25 mar 2004
+" 			 - fixed wrong indention when a php-tag is opened and closed on
+" 			   one single line.
+" 			 0.2 - 23 feb 2004
 " 			 - applied patch from Holger Dzeik <dzeik@nentec.de>
 "            - added changelog
 "            - added default indention of 3 spaces after the <?php for better
 "              reading
 "            - replaced URL
 "            - reformatted the options section
-"            0.1 - 2003
+"            0.1 - 27 mar 2003
 "            - initial creation of html-enhanced php indent-file
 
 " Options: 
@@ -71,7 +75,7 @@ function GetPhpIndent()
 	let ind = indent(lnum) + (&sw * ind)
 
 	" Indent after php open tags 
-	if line =~ '<?php'
+	if line =~ '<?php' && line !~ '?>'
 		let ind = ind + &sw
 	endif
 	if cline =~ '^\s*[?>]' " // Fix from Holger Dzeik <dzeik@nentec.de> Thanks!
